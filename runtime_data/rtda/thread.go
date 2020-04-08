@@ -20,10 +20,13 @@ func (Self *Thread) SetPc(pc int) {
 }
 
 func (Self *Thread) PopFrame() *Frame {
+	return Self.stack.pop()
 }
 
 func (Self *Thread) PushFrame(frame *Frame) {
+	Self.stack.push(frame)
 }
 
 func (Self *Thread) CurrentFrame() *Frame {
+	return Self.stack.top()
 }

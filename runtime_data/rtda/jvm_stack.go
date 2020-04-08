@@ -17,7 +17,7 @@ func (Self *Stack) push(frame *Frame) {
 		panic("java.lang.StackOverFlowError")
 	}
 	if Self._top != nil {
-		frame.Lower = Self._top
+		frame.lower = Self._top
 	}
 	Self._top = frame
 	Self.size++
@@ -28,8 +28,8 @@ func (Self *Stack) pop() *Frame {
 		panic("jvm stack is empty!")
 	}
 	top := Self._top
-	Self._top = top.Lower
-	top.Lower = nil
+	Self._top = top.lower
+	top.lower = nil
 	Self.size--
 	return top
 }
