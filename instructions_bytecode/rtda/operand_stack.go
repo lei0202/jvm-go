@@ -75,3 +75,14 @@ func (this *OperandStack) PopRef() *Object {
 	this.slots[this.size].ref = nil
 	return ref
 }
+
+func (this *OperandStack) PushSlot(slot Slot) {
+	this.slots[this.size] = slot
+	this.size++
+}
+
+func (this *OperandStack) PopSlot() Slot {
+	this.size--
+	val := this.slots[this.size]
+	return val
+}

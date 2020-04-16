@@ -1,6 +1,9 @@
 <component name="ProjectDictionaryState">
   <dictionary name="lilei">
     <words>
+      <w>bipush</w>
+      <w>bytecode</w>
+      <w>sipush</w>
       <w>xjre</w>
     </words>
   </dictionary>
