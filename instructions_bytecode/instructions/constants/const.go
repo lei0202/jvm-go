@@ -6,6 +6,7 @@ import (
 )
 
 type ACONST_NULL struct {
+	base.NoOperandsInstruction
 }
 type DCONST_0 struct {
 	base.NoOperandsInstruction

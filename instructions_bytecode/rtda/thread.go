@@ -30,3 +30,7 @@ func (Self *Thread) PushFrame(frame *Frame) {
 func (Self *Thread) CurrentFrame() *Frame {
 	return Self.stack.top()
 }
+
+func (Self *Thread) NewFrame(maxLocals, maxStack uint) *Frame {
+	return NewFrame(Self, maxLocals, maxStack)
+}

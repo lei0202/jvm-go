@@ -34,3 +34,13 @@ func (Self *MemberInfo) Name() string {
 func (Self *MemberInfo) Descriptor() string {
 	return Self.cp.getUtf8(Self.descriptorIndex)
 }
+
+func (Self *MemberInfo) CodeAttribute() *CodeAttribute {
+	for _, attrInfo := range Self.attributes {
+		switch attrInfo.(type) {
+		case *CodeAttribute:
+			return attrInfo.(*CodeAttribute)
+		}
+	}
+	return nil
+}

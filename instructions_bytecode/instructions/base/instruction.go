@@ -17,11 +17,11 @@ func (This NoOperandsInstruction) FetchOperands(reader *BytecodeReader) {
 
 // 表示跳转指零
 type BranchInstruction struct {
-	offset int
+	Offset int
 }
 
 func (This BranchInstruction) FetchOperands(reader *BytecodeReader) {
-	This.offset = int(reader.ReadInt16())
+	This.Offset = int(reader.ReadInt16())
 }
 
 // 存储和加载类指令需要根据索引存取局部变量表，索引由单字节操作数给出

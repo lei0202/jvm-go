@@ -44,3 +44,22 @@ func (this BytecodeReader) ReadUInt32() uint32 {
 func (this BytecodeReader) ReadInt32() int32 {
 	return int32(this.ReadUInt32())
 }
+
+// tableswitch 指令操作码的后面有0-3字节的padding，以保证defaultOffset在字节码中的地址是4的倍数
+func (this *BytecodeReader) SkipPadding() {
+	for this.pc%4 != 0 {
+		this.ReadUInt8()
+	}
+}
+
+func (this *BytecodeReader) ReadInt32s(n int32) []int32 {
+	ints := make([]int32, n)
+	for i := range ints {
+		ints[i] = this.ReadInt32()
+	}
+	return ints
+}
+
+func (this *BytecodeReader) PC() int {
+	return this.pc
+}

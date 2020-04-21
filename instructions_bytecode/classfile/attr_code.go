@@ -39,3 +39,15 @@ func readExceptionTable(reader *ClassReader) []*ExceptionTableEntry {
 	}
 	return table
 }
+
+func (this *CodeAttribute) MaxStack() uint {
+	return uint(this.maxStack)
+}
+
+func (this *CodeAttribute) MaxLocals() uint {
+	return uint(this.maxLocals)
+}
+
+func (this *CodeAttribute) Code() []byte {
+	return this.code
+}
