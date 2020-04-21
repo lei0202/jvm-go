@@ -7,37 +7,34 @@ type Instruction interface {
 	Execute(frame *rtda.Frame)
 }
 
-// 表示没有操作数的指令
 type NoOperandsInstruction struct {
+	// empty
 }
 
-func (This NoOperandsInstruction) FetchOperands(reader *BytecodeReader) {
-
+func (self *NoOperandsInstruction) FetchOperands(reader *BytecodeReader) {
+	// nothing to do
 }
 
-// 表示跳转指零
 type BranchInstruction struct {
 	Offset int
 }
 
-func (This BranchInstruction) FetchOperands(reader *BytecodeReader) {
-	This.Offset = int(reader.ReadInt16())
+func (self *BranchInstruction) FetchOperands(reader *BytecodeReader) {
+	self.Offset = int(reader.ReadInt16())
 }
 
-// 存储和加载类指令需要根据索引存取局部变量表，索引由单字节操作数给出
 type Index8Instruction struct {
-	Index int
+	Index uint
 }
 
-func (This Index8Instruction) FetchOperands(reader *BytecodeReader) {
-	This.Index = int(reader.ReadInt8())
+func (self *Index8Instruction) FetchOperands(reader *BytecodeReader) {
+	self.Index = uint(reader.ReadUint8())
 }
 
-// 这些指令需要访问常量池，常量池索引需要两字节操作数给出
 type Index16Instruction struct {
-	Index int
+	Index uint
 }
 
-func (This Index16Instruction) FetchOperands(reader *BytecodeReader) {
-	This.Index = int(reader.ReadInt16())
+func (self *Index16Instruction) FetchOperands(reader *BytecodeReader) {
+	self.Index = uint(reader.ReadUint16())
 }

@@ -11,49 +11,46 @@ func newLocalVars(maxLocals uint) LocalVars {
 	return nil
 }
 
-func (Self LocalVars) SetInt(index uint, val int32) {
-	Self[index].num = val
+func (self LocalVars) SetInt(index uint, val int32) {
+	self[index].num = val
+}
+func (self LocalVars) GetInt(index uint) int32 {
+	return self[index].num
 }
 
-func (Self LocalVars) GetInt(index uint) int32 {
-	return Self[index].num
-}
-
-func (Self LocalVars) SetFloat(index uint, val float32) {
+func (self LocalVars) SetFloat(index uint, val float32) {
 	bits := math.Float32bits(val)
-	Self[index].num = int32(bits)
+	self[index].num = int32(bits)
 }
-
-func (Self LocalVars) GetFloat(index uint) float32 {
-	bits := uint32(Self[index].num)
+func (self LocalVars) GetFloat(index uint) float32 {
+	bits := uint32(self[index].num)
 	return math.Float32frombits(bits)
 }
 
-func (Self LocalVars) SetLong(index uint, val int64) {
-	Self[index].num = int32(val)
-	Self[index+1].num = int32(val >> 32)
+// long consumes two slots
+func (self LocalVars) SetLong(index uint, val int64) {
+	self[index].num = int32(val)
+	self[index+1].num = int32(val >> 32)
 }
-
-func (Self LocalVars) GetLong(index uint) int64 {
-	low := Self[index].num
-	high := Self[index].num
+func (self LocalVars) GetLong(index uint) int64 {
+	low := uint32(self[index].num)
+	high := uint32(self[index+1].num)
 	return int64(high)<<32 | int64(low)
 }
 
-func (Self LocalVars) SetDouble(index uint, val float64) {
+// double consumes two slots
+func (self LocalVars) SetDouble(index uint, val float64) {
 	bits := math.Float64bits(val)
-	Self.SetLong(index, int64(bits))
+	self.SetLong(index, int64(bits))
 }
-
-func (Self LocalVars) GetDouble(index uint) float64 {
-	bits := uint64(Self.GetLong(index))
+func (self LocalVars) GetDouble(index uint) float64 {
+	bits := uint64(self.GetLong(index))
 	return math.Float64frombits(bits)
 }
 
-func (Self LocalVars) SetRef(index uint, ref *Object) {
-	Self[index].ref = ref
+func (self LocalVars) SetRef(index uint, ref *Object) {
+	self[index].ref = ref
 }
-
-func (Self LocalVars) GetRef(index uint) *Object {
-	return Self[index].ref
+func (self LocalVars) GetRef(index uint) *Object {
+	return self[index].ref
 }

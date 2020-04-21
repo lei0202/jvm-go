@@ -1,5 +1,22 @@
 package classfile
 
+/*
+field_info {
+    u2             access_flags;
+    u2             name_index;
+    u2             descriptor_index;
+    u2             attributes_count;
+    attribute_info attributes[attributes_count];
+}
+method_info {
+    u2             access_flags;
+    u2             name_index;
+    u2             descriptor_index;
+    u2             attributes_count;
+    attribute_info attributes[attributes_count];
+}
+*/
+
 type MemberInfo struct {
 	cp              ConstantPool
 	accessFlags     uint16
@@ -8,6 +25,7 @@ type MemberInfo struct {
 	attributes      []AttributeInfo
 }
 
+// read field or method table
 func readMembers(reader *ClassReader, cp ConstantPool) []*MemberInfo {
 	memberCount := reader.readUint16()
 	members := make([]*MemberInfo, memberCount)
@@ -27,16 +45,18 @@ func readMember(reader *ClassReader, cp ConstantPool) *MemberInfo {
 	}
 }
 
-func (Self *MemberInfo) Name() string {
-	return Self.cp.getUtf8(Self.nameIndex)
+func (self *MemberInfo) AccessFlags() uint16 {
+	return self.accessFlags
+}
+func (self *MemberInfo) Name() string {
+	return self.cp.getUtf8(self.nameIndex)
+}
+func (self *MemberInfo) Descriptor() string {
+	return self.cp.getUtf8(self.descriptorIndex)
 }
 
-func (Self *MemberInfo) Descriptor() string {
-	return Self.cp.getUtf8(Self.descriptorIndex)
-}
-
-func (Self *MemberInfo) CodeAttribute() *CodeAttribute {
-	for _, attrInfo := range Self.attributes {
+func (self *MemberInfo) CodeAttribute() *CodeAttribute {
+	for _, attrInfo := range self.attributes {
 		switch attrInfo.(type) {
 		case *CodeAttribute:
 			return attrInfo.(*CodeAttribute)

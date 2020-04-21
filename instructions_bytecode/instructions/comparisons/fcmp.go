@@ -3,16 +3,21 @@ package comparisons
 import "JVM-GO/instructions_bytecode/instructions/base"
 import "JVM-GO/instructions_bytecode/rtda"
 
-type FCMPG struct {
-	base.NoOperandsInstruction
+// Compare float
+type FCMPG struct{ base.NoOperandsInstruction }
+
+func (self *FCMPG) Execute(frame *rtda.Frame) {
+	_fcmp(frame, true)
 }
 
-type FCMPL struct {
-	base.NoOperandsInstruction
+type FCMPL struct{ base.NoOperandsInstruction }
+
+func (self *FCMPL) Execute(frame *rtda.Frame) {
+	_fcmp(frame, false)
 }
 
 func _fcmp(frame *rtda.Frame, gFlag bool) {
-	stack := frame.OperandStack
+	stack := frame.OperandStack()
 	v2 := stack.PopFloat()
 	v1 := stack.PopFloat()
 	if v1 > v2 {
@@ -26,12 +31,4 @@ func _fcmp(frame *rtda.Frame, gFlag bool) {
 	} else {
 		stack.PushInt(-1)
 	}
-}
-
-func (this *FCMPG) Execute(frame *rtda.Frame) {
-	_fcmp(frame, true)
-}
-
-func (this *FCMPL) Execute(frame *rtda.Frame) {
-	_fcmp(frame, false)
 }

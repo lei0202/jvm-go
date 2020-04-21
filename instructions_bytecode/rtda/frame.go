@@ -1,29 +1,35 @@
 package rtda
 
+// stack frame
 type Frame struct {
-	lower        *Frame
-	LocalVars    LocalVars
-	OperandStack OperandStack
+	lower        *Frame // stack is implemented as linked list
+	localVars    LocalVars
+	operandStack *OperandStack
 	thread       *Thread
-	nextPC       int
+	nextPC       int // the next instruction after the call
 }
 
-func (this *Frame) NextPC() int {
-	return this.nextPC
-}
-
-func (this *Frame) SetNextPC(pc int) {
-	this.nextPC = pc
-}
-
-func (this *Frame) Thread() *Thread {
-	return this.thread
-}
-
-func NewFrame(thread *Thread, maxLocals, maxStack uint) *Frame {
+func newFrame(thread *Thread, maxLocals, maxStack uint) *Frame {
 	return &Frame{
 		thread:       thread,
-		LocalVars:    newLocalVars(maxLocals),
-		OperandStack: newOperandStack(maxStack),
+		localVars:    newLocalVars(maxLocals),
+		operandStack: newOperandStack(maxStack),
 	}
+}
+
+// getters & setters
+func (self *Frame) LocalVars() LocalVars {
+	return self.localVars
+}
+func (self *Frame) OperandStack() *OperandStack {
+	return self.operandStack
+}
+func (self *Frame) Thread() *Thread {
+	return self.thread
+}
+func (self *Frame) NextPC() int {
+	return self.nextPC
+}
+func (self *Frame) SetNextPC(nextPC int) {
+	self.nextPC = nextPC
 }

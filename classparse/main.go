@@ -41,7 +41,7 @@ func printClassInfo(cf *classfile.ClassFile) {
 	fmt.Printf("version:%v.%v\n", cf.MajorVersion(), cf.MinorVersion())
 	fmt.Printf("constantscount:%v\n", len(cf.ConstantPool()))
 	fmt.Printf("accessflags:0x%x\n", cf.AccessFlags())
-	fmt.Printf("thisclass:%v\n", cf.ThisClassName())
+	fmt.Printf("thisclass:%v\n", cf.ClassName())
 	fmt.Printf("superclass:%v\n", cf.SuperClassName())
 	fmt.Printf("interfaces:%v\n", cf.InterfaceNames())
 	fmt.Printf("fieldscount:%v\n", len(cf.Fields()))

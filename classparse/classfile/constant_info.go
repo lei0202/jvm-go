@@ -1,5 +1,6 @@
 package classfile
 
+// Constant pool tags
 const (
 	CONSTANT_Class              = 7
 	CONSTANT_Fieldref           = 9
@@ -17,6 +18,12 @@ const (
 	CONSTANT_InvokeDynamic      = 18
 )
 
+/*
+cp_info {
+    u1 tag;
+    u1 info[];
+}
+*/
 type ConstantInfo interface {
 	readInfo(reader *ClassReader)
 }
@@ -26,9 +33,9 @@ func readConstantInfo(reader *ClassReader, cp ConstantPool) ConstantInfo {
 	c := newConstantInfo(tag, cp)
 	c.readInfo(reader)
 	return c
-
 }
 
+// todo ugly code
 func newConstantInfo(tag uint8, cp ConstantPool) ConstantInfo {
 	switch tag {
 	case CONSTANT_Integer:
@@ -46,11 +53,11 @@ func newConstantInfo(tag uint8, cp ConstantPool) ConstantInfo {
 	case CONSTANT_Class:
 		return &ConstantClassInfo{cp: cp}
 	case CONSTANT_Fieldref:
-		return &ConstantFieldrefInfo{ConstantMemberRefInfo{cp: cp}}
+		return &ConstantFieldrefInfo{ConstantMemberrefInfo{cp: cp}}
 	case CONSTANT_Methodref:
-		return &ConstantMethodrefInfo{ConstantMemberRefInfo{cp: cp}}
+		return &ConstantMethodrefInfo{ConstantMemberrefInfo{cp: cp}}
 	case CONSTANT_InterfaceMethodref:
-		return &ConstantInterfaceMethodrefInfo{ConstantMemberRefInfo{cp: cp}}
+		return &ConstantInterfaceMethodrefInfo{ConstantMemberrefInfo{cp: cp}}
 	case CONSTANT_NameAndType:
 		return &ConstantNameAndTypeInfo{}
 	case CONSTANT_MethodType:
@@ -58,7 +65,7 @@ func newConstantInfo(tag uint8, cp ConstantPool) ConstantInfo {
 	case CONSTANT_MethodHandle:
 		return &ConstantMethodHandleInfo{}
 	case CONSTANT_InvokeDynamic:
-		return &ConstantInvokeDynamicInfo{cp: cp}
+		return &ConstantInvokeDynamicInfo{}
 	default:
 		panic("java.lang.ClassFormatError: constant pool tag!")
 	}

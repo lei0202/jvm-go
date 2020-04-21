@@ -1,14 +1,19 @@
 package classfile
 
+/*
+CONSTANT_Class_info {
+    u1 tag;
+    u2 name_index;
+}
+*/
 type ConstantClassInfo struct {
-	cp             ConstantPool
-	ClassNameIndex uint16
+	cp        ConstantPool
+	nameIndex uint16
 }
 
-func (Self *ConstantClassInfo) readInfo(reader *ClassReader) {
-	Self.ClassNameIndex = reader.readUint16()
+func (self *ConstantClassInfo) readInfo(reader *ClassReader) {
+	self.nameIndex = reader.readUint16()
 }
-
-func (Self *ConstantClassInfo) Name() string {
-	return Self.cp.getUtf8(Self.ClassNameIndex)
+func (self *ConstantClassInfo) Name() string {
+	return self.cp.getUtf8(self.nameIndex)
 }

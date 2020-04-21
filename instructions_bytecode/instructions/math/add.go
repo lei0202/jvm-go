@@ -3,44 +3,46 @@ package math
 import "JVM-GO/instructions_bytecode/instructions/base"
 import "JVM-GO/instructions_bytecode/rtda"
 
-type DADD struct {
-	base.NoOperandsInstruction
-}
-type IADD struct {
-	base.NoOperandsInstruction
-}
-type LADD struct {
-	base.NoOperandsInstruction
-}
-type FADD struct {
-	base.NoOperandsInstruction
+// Add double
+type DADD struct{ base.NoOperandsInstruction }
+
+func (self *DADD) Execute(frame *rtda.Frame) {
+	stack := frame.OperandStack()
+	v1 := stack.PopDouble()
+	v2 := stack.PopDouble()
+	result := v1 + v2
+	stack.PushDouble(result)
 }
 
-func (this *DADD) Execute(frame *rtda.Frame) {
-	stack := frame.OperandStack
-	val1 := stack.PopDouble()
-	val2 := stack.PopDouble()
-	val := val1 + val2
-	stack.PushDouble(val)
+// Add float
+type FADD struct{ base.NoOperandsInstruction }
+
+func (self *FADD) Execute(frame *rtda.Frame) {
+	stack := frame.OperandStack()
+	v2 := stack.PopFloat()
+	v1 := stack.PopFloat()
+	result := v1 + v2
+	stack.PushFloat(result)
 }
-func (this *IADD) Execute(frame *rtda.Frame) {
-	stack := frame.OperandStack
-	val1 := stack.PopInt()
-	val2 := stack.PopInt()
-	val := val1 + val2
-	stack.PushInt(val)
+
+// Add int
+type IADD struct{ base.NoOperandsInstruction }
+
+func (self *IADD) Execute(frame *rtda.Frame) {
+	stack := frame.OperandStack()
+	v2 := stack.PopInt()
+	v1 := stack.PopInt()
+	result := v1 + v2
+	stack.PushInt(result)
 }
-func (this *LADD) Execute(frame *rtda.Frame) {
-	stack := frame.OperandStack
-	val1 := stack.PopLong()
-	val2 := stack.PopLong()
-	val := val1 + val2
-	stack.PushLong(val)
-}
-func (this *FADD) Execute(frame *rtda.Frame) {
-	stack := frame.OperandStack
-	val1 := stack.PopFloat()
-	val2 := stack.PopFloat()
-	val := val1 + val2
-	stack.PushFloat(val)
+
+// Add long
+type LADD struct{ base.NoOperandsInstruction }
+
+func (self *LADD) Execute(frame *rtda.Frame) {
+	stack := frame.OperandStack()
+	v2 := stack.PopLong()
+	v1 := stack.PopLong()
+	result := v1 + v2
+	stack.PushLong(result)
 }

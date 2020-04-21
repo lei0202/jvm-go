@@ -3,15 +3,11 @@ package math
 import "JVM-GO/instructions_bytecode/instructions/base"
 import "JVM-GO/instructions_bytecode/rtda"
 
-type ISHL struct{ base.NoOperandsInstruction }  //int左位移
-type ISHR struct{ base.NoOperandsInstruction }  //int算术右位移
-type IUSHR struct{ base.NoOperandsInstruction } //int逻辑右位移
-type LSHL struct{ base.NoOperandsInstruction }  //long左位移
-type LSHR struct{ base.NoOperandsInstruction }  //long算术右位移
-type LUSHR struct{ base.NoOperandsInstruction } //long逻辑右位移
+// Shift left int
+type ISHL struct{ base.NoOperandsInstruction }
 
-func (this *ISHL) Execute(frame *rtda.Frame) {
-	stack := frame.OperandStack
+func (self *ISHL) Execute(frame *rtda.Frame) {
+	stack := frame.OperandStack()
 	v2 := stack.PopInt()
 	v1 := stack.PopInt()
 	s := uint32(v2) & 0x1f
@@ -19,8 +15,11 @@ func (this *ISHL) Execute(frame *rtda.Frame) {
 	stack.PushInt(result)
 }
 
-func (this *ISHR) Execute(frame *rtda.Frame) {
-	stack := frame.OperandStack
+// Arithmetic shift right int
+type ISHR struct{ base.NoOperandsInstruction }
+
+func (self *ISHR) Execute(frame *rtda.Frame) {
+	stack := frame.OperandStack()
 	v2 := stack.PopInt()
 	v1 := stack.PopInt()
 	s := uint32(v2) & 0x1f
@@ -28,8 +27,11 @@ func (this *ISHR) Execute(frame *rtda.Frame) {
 	stack.PushInt(result)
 }
 
-func (this *IUSHR) Execute(frame *rtda.Frame) {
-	stack := frame.OperandStack
+// Logical shift right int
+type IUSHR struct{ base.NoOperandsInstruction }
+
+func (self *IUSHR) Execute(frame *rtda.Frame) {
+	stack := frame.OperandStack()
 	v2 := stack.PopInt()
 	v1 := stack.PopInt()
 	s := uint32(v2) & 0x1f
@@ -37,17 +39,23 @@ func (this *IUSHR) Execute(frame *rtda.Frame) {
 	stack.PushInt(result)
 }
 
-func (this *LSHL) Execute(frame *rtda.Frame) {
-	stack := frame.OperandStack
+// Shift left long
+type LSHL struct{ base.NoOperandsInstruction }
+
+func (self *LSHL) Execute(frame *rtda.Frame) {
+	stack := frame.OperandStack()
 	v2 := stack.PopInt()
 	v1 := stack.PopLong()
-	s := uint(v2) & 0x3f
+	s := uint32(v2) & 0x3f
 	result := v1 << s
 	stack.PushLong(result)
 }
 
-func (this *LSHR) Execute(frame *rtda.Frame) {
-	stack := frame.OperandStack
+// Arithmetic shift right long
+type LSHR struct{ base.NoOperandsInstruction }
+
+func (self *LSHR) Execute(frame *rtda.Frame) {
+	stack := frame.OperandStack()
 	v2 := stack.PopInt()
 	v1 := stack.PopLong()
 	s := uint32(v2) & 0x3f
@@ -55,8 +63,11 @@ func (this *LSHR) Execute(frame *rtda.Frame) {
 	stack.PushLong(result)
 }
 
-func (this *LUSHR) Execute(frame *rtda.Frame) {
-	stack := frame.OperandStack
+// Logical shift right long
+type LUSHR struct{ base.NoOperandsInstruction }
+
+func (self *LUSHR) Execute(frame *rtda.Frame) {
+	stack := frame.OperandStack()
 	v2 := stack.PopInt()
 	v1 := stack.PopLong()
 	s := uint32(v2) & 0x3f

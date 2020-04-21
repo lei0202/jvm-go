@@ -1,8 +1,6 @@
 package classpath
 
-import (
-	"io/ioutil"
-)
+import "io/ioutil"
 import "path/filepath"
 
 type DirEntry struct {
@@ -14,7 +12,6 @@ func newDirEntry(path string) *DirEntry {
 	if err != nil {
 		panic(err)
 	}
-
 	return &DirEntry{absDir}
 }
 

@@ -1,14 +1,21 @@
 package classfile
 
-type AttributeSourceFile struct {
+/*
+SourceFile_attribute {
+    u2 attribute_name_index;
+    u4 attribute_length;
+    u2 sourcefile_index;
+}
+*/
+type SourceFileAttribute struct {
 	cp              ConstantPool
 	sourceFileIndex uint16
 }
 
-func (Self *AttributeSourceFile) readInfo(reader *ClassReader) {
-	Self.sourceFileIndex = reader.readUint16()
+func (self *SourceFileAttribute) readInfo(reader *ClassReader) {
+	self.sourceFileIndex = reader.readUint16()
 }
 
-func (Self *AttributeSourceFile) FileName() string {
-	return Self.cp.getUtf8(Self.sourceFileIndex)
+func (self *SourceFileAttribute) FileName() string {
+	return self.cp.getUtf8(self.sourceFileIndex)
 }

@@ -1,9 +1,10 @@
 package rtda
 
+// jvm stack
 type Stack struct {
 	maxSize uint
 	size    uint
-	_top    *Frame
+	_top    *Frame // stack is implemented as linked list
 }
 
 func newStack(maxSize uint) *Stack {
@@ -12,31 +13,36 @@ func newStack(maxSize uint) *Stack {
 	}
 }
 
-func (Self *Stack) push(frame *Frame) {
-	if Self.size >= Self.maxSize {
-		panic("java.lang.StackOverFlowError")
+func (self *Stack) push(frame *Frame) {
+	if self.size >= self.maxSize {
+		panic("java.lang.StackOverflowError")
 	}
-	if Self._top != nil {
-		frame.lower = Self._top
+
+	if self._top != nil {
+		frame.lower = self._top
 	}
-	Self._top = frame
-	Self.size++
+
+	self._top = frame
+	self.size++
 }
 
-func (Self *Stack) pop() *Frame {
-	if Self._top == nil {
+func (self *Stack) pop() *Frame {
+	if self._top == nil {
 		panic("jvm stack is empty!")
 	}
-	top := Self._top
-	Self._top = top.lower
+
+	top := self._top
+	self._top = top.lower
 	top.lower = nil
-	Self.size--
+	self.size--
+
 	return top
 }
 
-func (Self *Stack) top() *Frame {
-	if Self._top == nil {
+func (self *Stack) top() *Frame {
+	if self._top == nil {
 		panic("jvm stack is empty!")
 	}
-	return Self._top
+
+	return self._top
 }

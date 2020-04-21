@@ -3,44 +3,46 @@ package math
 import "JVM-GO/instructions_bytecode/instructions/base"
 import "JVM-GO/instructions_bytecode/rtda"
 
-type DSUB struct {
-	base.NoOperandsInstruction
-}
-type ISUB struct {
-	base.NoOperandsInstruction
-}
-type LSUB struct {
-	base.NoOperandsInstruction
-}
-type FSUB struct {
-	base.NoOperandsInstruction
+// Subtract double
+type DSUB struct{ base.NoOperandsInstruction }
+
+func (self *DSUB) Execute(frame *rtda.Frame) {
+	stack := frame.OperandStack()
+	v2 := stack.PopDouble()
+	v1 := stack.PopDouble()
+	result := v1 - v2
+	stack.PushDouble(result)
 }
 
-func (this *DSUB) Execute(frame *rtda.Frame) {
-	stack := frame.OperandStack
-	val1 := stack.PopDouble()
-	val2 := stack.PopDouble()
-	val := val1 - val2
-	stack.PushDouble(val)
+// Subtract float
+type FSUB struct{ base.NoOperandsInstruction }
+
+func (self *FSUB) Execute(frame *rtda.Frame) {
+	stack := frame.OperandStack()
+	v2 := stack.PopFloat()
+	v1 := stack.PopFloat()
+	result := v1 - v2
+	stack.PushFloat(result)
 }
-func (this *ISUB) Execute(frame *rtda.Frame) {
-	stack := frame.OperandStack
-	val1 := stack.PopInt()
-	val2 := stack.PopInt()
-	val := val1 - val2
-	stack.PushInt(val)
+
+// Subtract int
+type ISUB struct{ base.NoOperandsInstruction }
+
+func (self *ISUB) Execute(frame *rtda.Frame) {
+	stack := frame.OperandStack()
+	v2 := stack.PopInt()
+	v1 := stack.PopInt()
+	result := v1 - v2
+	stack.PushInt(result)
 }
-func (this *LSUB) Execute(frame *rtda.Frame) {
-	stack := frame.OperandStack
-	val1 := stack.PopLong()
-	val2 := stack.PopLong()
-	val := val1 - val2
-	stack.PushLong(val)
-}
-func (this *FSUB) Execute(frame *rtda.Frame) {
-	stack := frame.OperandStack
-	val1 := stack.PopFloat()
-	val2 := stack.PopFloat()
-	val := val1 - val2
-	stack.PushFloat(val)
+
+// Subtract long
+type LSUB struct{ base.NoOperandsInstruction }
+
+func (self *LSUB) Execute(frame *rtda.Frame) {
+	stack := frame.OperandStack()
+	v2 := stack.PopLong()
+	v1 := stack.PopLong()
+	result := v1 - v2
+	stack.PushLong(result)
 }

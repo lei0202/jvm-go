@@ -1,20 +1,37 @@
 package classfile
 
-import (
-	"fmt"
-	"unicode/utf16"
-)
+import "fmt"
+import "unicode/utf16"
 
+/*
+CONSTANT_Utf8_info {
+    u1 tag;
+    u2 length;
+    u1 bytes[length];
+}
+*/
 type ConstantUtf8Info struct {
 	str string
 }
 
-func (Self ConstantUtf8Info) readInfo(reader *ClassReader) {
+func (self *ConstantUtf8Info) readInfo(reader *ClassReader) {
 	length := uint32(reader.readUint16())
 	bytes := reader.readBytes(length)
-	Self.str = decodeMUTF8(bytes)
+	self.str = decodeMUTF8(bytes)
 }
 
+func (self *ConstantUtf8Info) Str() string {
+	return self.str
+}
+
+/*
+func decodeMUTF8(bytes []byte) string {
+	return string(bytes) // not correct!
+}
+*/
+
+// mutf8 -> utf16 -> utf32 -> string
+// see java.io.DataInputStream.readUTF(DataInput)
 func decodeMUTF8(bytearr []byte) string {
 	utflen := len(bytearr)
 	chararr := make([]uint16, utflen)
@@ -62,7 +79,7 @@ func decodeMUTF8(bytearr []byte) string {
 			char2 = uint16(bytearr[count-2])
 			char3 = uint16(bytearr[count-1])
 			if char2&0xC0 != 0x80 || char3&0xC0 != 0x80 {
-				panic(fmt.Errorf("malformed input around byte %v", count-1))
+				panic(fmt.Errorf("malformed input around byte %v", (count - 1)))
 			}
 			chararr[chararr_count] = c&0x0F<<12 | char2&0x3F<<6 | char3&0x3F<<0
 			chararr_count++

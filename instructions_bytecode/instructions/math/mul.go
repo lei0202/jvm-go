@@ -3,44 +3,46 @@ package math
 import "JVM-GO/instructions_bytecode/instructions/base"
 import "JVM-GO/instructions_bytecode/rtda"
 
-type DMUL struct {
-	base.NoOperandsInstruction
-}
-type IMUL struct {
-	base.NoOperandsInstruction
-}
-type LMUL struct {
-	base.NoOperandsInstruction
-}
-type FMUL struct {
-	base.NoOperandsInstruction
+// Multiply double
+type DMUL struct{ base.NoOperandsInstruction }
+
+func (self *DMUL) Execute(frame *rtda.Frame) {
+	stack := frame.OperandStack()
+	v2 := stack.PopDouble()
+	v1 := stack.PopDouble()
+	result := v1 * v2
+	stack.PushDouble(result)
 }
 
-func (this *DMUL) Execute(frame *rtda.Frame) {
-	stack := frame.OperandStack
-	val1 := stack.PopDouble()
-	val2 := stack.PopDouble()
-	val := val1 * val2
-	stack.PushDouble(val)
+// Multiply float
+type FMUL struct{ base.NoOperandsInstruction }
+
+func (self *FMUL) Execute(frame *rtda.Frame) {
+	stack := frame.OperandStack()
+	v2 := stack.PopFloat()
+	v1 := stack.PopFloat()
+	result := v1 * v2
+	stack.PushFloat(result)
 }
-func (this *IMUL) Execute(frame *rtda.Frame) {
-	stack := frame.OperandStack
-	val1 := stack.PopInt()
-	val2 := stack.PopInt()
-	val := val1 * val2
-	stack.PushInt(val)
+
+// Multiply int
+type IMUL struct{ base.NoOperandsInstruction }
+
+func (self *IMUL) Execute(frame *rtda.Frame) {
+	stack := frame.OperandStack()
+	v2 := stack.PopInt()
+	v1 := stack.PopInt()
+	result := v1 * v2
+	stack.PushInt(result)
 }
-func (this *LMUL) Execute(frame *rtda.Frame) {
-	stack := frame.OperandStack
-	val1 := stack.PopLong()
-	val2 := stack.PopLong()
-	val := val1 * val2
-	stack.PushLong(val)
-}
-func (this *FMUL) Execute(frame *rtda.Frame) {
-	stack := frame.OperandStack
-	val1 := stack.PopFloat()
-	val2 := stack.PopFloat()
-	val := val1 * val2
-	stack.PushFloat(val)
+
+// Multiply long
+type LMUL struct{ base.NoOperandsInstruction }
+
+func (self *LMUL) Execute(frame *rtda.Frame) {
+	stack := frame.OperandStack()
+	v2 := stack.PopLong()
+	v1 := stack.PopLong()
+	result := v1 * v2
+	stack.PushLong(result)
 }

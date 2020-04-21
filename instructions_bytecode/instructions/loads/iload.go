@@ -3,51 +3,38 @@ package loads
 import "JVM-GO/instructions_bytecode/instructions/base"
 import "JVM-GO/instructions_bytecode/rtda"
 
-type ILOAD struct {
-	base.Index8Instruction
+// Load int from local variable
+type ILOAD struct{ base.Index8Instruction }
+
+func (self *ILOAD) Execute(frame *rtda.Frame) {
+	_iload(frame, self.Index)
 }
 
-type ILOAD_0 struct {
-	base.NoOperandsInstruction
-}
-type ILOAD_1 struct {
-	base.NoOperandsInstruction
-}
-type ILOAD_2 struct {
-	base.NoOperandsInstruction
-}
-type ILOAD_3 struct {
-	base.NoOperandsInstruction
-}
-type ILOAD_4 struct {
-	base.NoOperandsInstruction
+type ILOAD_0 struct{ base.NoOperandsInstruction }
+
+func (self *ILOAD_0) Execute(frame *rtda.Frame) {
+	_iload(frame, 0)
 }
 
-func _load(frame *rtda.Frame, index uint) {
-	val := frame.LocalVars.GetInt(index)
-	frame.OperandStack.PushInt(val)
+type ILOAD_1 struct{ base.NoOperandsInstruction }
+
+func (self *ILOAD_1) Execute(frame *rtda.Frame) {
+	_iload(frame, 1)
 }
 
-func (this *ILOAD) Execute(frame *rtda.Frame) {
-	_load(frame, uint(this.Index))
+type ILOAD_2 struct{ base.NoOperandsInstruction }
+
+func (self *ILOAD_2) Execute(frame *rtda.Frame) {
+	_iload(frame, 2)
 }
 
-func (this *ILOAD_0) Execute(frame *rtda.Frame) {
-	_load(frame, uint(0))
+type ILOAD_3 struct{ base.NoOperandsInstruction }
+
+func (self *ILOAD_3) Execute(frame *rtda.Frame) {
+	_iload(frame, 3)
 }
 
-func (this *ILOAD_1) Execute(frame *rtda.Frame) {
-	_load(frame, uint(1))
-}
-
-func (this *ILOAD_2) Execute(frame *rtda.Frame) {
-	_load(frame, uint(2))
-}
-
-func (this *ILOAD_3) Execute(frame *rtda.Frame) {
-	_load(frame, uint(3))
-}
-
-func (this *ILOAD_4) Execute(frame *rtda.Frame) {
-	_load(frame, uint(4))
+func _iload(frame *rtda.Frame, index uint) {
+	val := frame.LocalVars().GetInt(index)
+	frame.OperandStack().PushInt(val)
 }

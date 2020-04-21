@@ -1,55 +1,57 @@
 package math
 
-import (
-	"JVM-GO/instructions_bytecode/instructions/base"
-	"math"
-)
+import "math"
+import "JVM-GO/instructions_bytecode/instructions/base"
 import "JVM-GO/instructions_bytecode/rtda"
 
-type DREM struct {
-	base.NoOperandsInstruction
-}
-type FREM struct {
-	base.NoOperandsInstruction
-}
-type IREM struct {
-	base.NoOperandsInstruction
-}
-type LREM struct {
-	base.NoOperandsInstruction
+// Remainder double
+type DREM struct{ base.NoOperandsInstruction }
+
+func (self *DREM) Execute(frame *rtda.Frame) {
+	stack := frame.OperandStack()
+	v2 := stack.PopDouble()
+	v1 := stack.PopDouble()
+	result := math.Mod(v1, v2) // todo
+	stack.PushDouble(result)
 }
 
-func (this *DREM) Execute(frame *rtda.Frame) {
-	stack := frame.OperandStack
-	val1 := stack.PopDouble()
-	val2 := stack.PopDouble()
-	val := math.Mod(val1, val2)
-	stack.PushDouble(val)
+// Remainder float
+type FREM struct{ base.NoOperandsInstruction }
+
+func (self *FREM) Execute(frame *rtda.Frame) {
+	stack := frame.OperandStack()
+	v2 := stack.PopFloat()
+	v1 := stack.PopFloat()
+	result := float32(math.Mod(float64(v1), float64(v2))) // todo
+	stack.PushFloat(result)
 }
-func (this *IREM) Execute(frame *rtda.Frame) {
-	stack := frame.OperandStack
-	val1 := stack.PopInt()
-	val2 := stack.PopInt()
-	if val2 == 0 {
+
+// Remainder int
+type IREM struct{ base.NoOperandsInstruction }
+
+func (self *IREM) Execute(frame *rtda.Frame) {
+	stack := frame.OperandStack()
+	v2 := stack.PopInt()
+	v1 := stack.PopInt()
+	if v2 == 0 {
 		panic("java.lang.ArithmeticException: / by zero")
 	}
-	val := val1 % val2
-	stack.PushInt(val)
+
+	result := v1 % v2
+	stack.PushInt(result)
 }
-func (this *LREM) Execute(frame *rtda.Frame) {
-	stack := frame.OperandStack
-	val1 := stack.PopLong()
-	val2 := stack.PopLong()
-	if val2 == 0 {
+
+// Remainder long
+type LREM struct{ base.NoOperandsInstruction }
+
+func (self *LREM) Execute(frame *rtda.Frame) {
+	stack := frame.OperandStack()
+	v2 := stack.PopLong()
+	v1 := stack.PopLong()
+	if v2 == 0 {
 		panic("java.lang.ArithmeticException: / by zero")
 	}
-	val := val1 % val2
-	stack.PushLong(val)
-}
-func (this *FREM) Execute(frame *rtda.Frame) {
-	stack := frame.OperandStack
-	val1 := stack.PopFloat()
-	val2 := stack.PopFloat()
-	val := math.Mod(float64(val1), float64(val2))
-	stack.PushFloat(float32(val))
+
+	result := v1 % v2
+	stack.PushLong(result)
 }

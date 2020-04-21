@@ -1,9 +1,6 @@
 package classpath
 
-import (
-	"os"
-)
-
+import "os"
 import "path/filepath"
 
 type Classpath struct {
@@ -14,24 +11,21 @@ type Classpath struct {
 
 func Parse(jreOption, cpOption string) *Classpath {
 	cp := &Classpath{}
-	// !!!!!!
-	//fmt.Println(jreOption,cpOption)
 	cp.parseBootAndExtClasspath(jreOption)
-	//fmt.Println(cp.bootClasspath,cp.extClasspath)
 	cp.parseUserClasspath(cpOption)
-	//fmt.Println(cp.userClasspath)
 	return cp
 }
 
-func (mySelf *Classpath) parseBootAndExtClasspath(jreOption string) {
-	// jre/lib/*
+func (self *Classpath) parseBootAndExtClasspath(jreOption string) {
 	jreDir := getJreDir(jreOption)
-	jreLibPath := filepath.Join(jreDir, "lib", "*")
-	mySelf.bootClasspath = newWildcardEntry(jreLibPath)
-	//jre/lib/ext/*
-	jreExtPath := filepath.Join(jreDir, "lib", "ext", "*")
-	mySelf.extClasspath = newWildcardEntry(jreExtPath)
 
+	// jre/lib/*
+	jreLibPath := filepath.Join(jreDir, "lib", "*")
+	self.bootClasspath = newWildcardEntry(jreLibPath)
+
+	// jre/lib/ext/*
+	jreExtPath := filepath.Join(jreDir, "lib", "ext", "*")
+	self.extClasspath = newWildcardEntry(jreExtPath)
 }
 
 func getJreDir(jreOption string) string {
@@ -44,15 +38,11 @@ func getJreDir(jreOption string) string {
 	if jh := os.Getenv("JAVA_HOME"); jh != "" {
 		return filepath.Join(jh, "jre")
 	}
-
-	panic("Cannot find jreFolder!")
-
+	panic("Can not find jre folder!")
 }
 
 func exists(path string) bool {
-	// returns a file info
 	if _, err := os.Stat(path); err != nil {
-
 		if os.IsNotExist(err) {
 			return false
 		}
@@ -60,29 +50,25 @@ func exists(path string) bool {
 	return true
 }
 
-func (mySelf *Classpath) parseUserClasspath(cpOption string) {
+func (self *Classpath) parseUserClasspath(cpOption string) {
 	if cpOption == "" {
 		cpOption = "."
 	}
-	mySelf.userClasspath = newEntry(cpOption)
+	self.userClasspath = newEntry(cpOption)
 }
 
-func (mySelf *Classpath) ReadClass(className string) ([]byte, Entry, error) {
+// className: fully/qualified/ClassName
+func (self *Classpath) ReadClass(className string) ([]byte, Entry, error) {
 	className = className + ".class"
-
-	//data, entry, err := mySelf.bootClasspath.readClass(className)
-	//fmt.Println(data,entry,err)
-	//fmt.Println(mySelf.bootClasspath)
-	if data, entry, err := mySelf.bootClasspath.readClass(className); err == nil {
+	if data, entry, err := self.bootClasspath.readClass(className); err == nil {
 		return data, entry, err
 	}
-
-	if data, entry, err := mySelf.extClasspath.readClass(className); err == nil {
+	if data, entry, err := self.extClasspath.readClass(className); err == nil {
 		return data, entry, err
 	}
-	return mySelf.userClasspath.readClass(className)
+	return self.userClasspath.readClass(className)
 }
 
-func (mySelf *Classpath) String() string {
-	return mySelf.userClasspath.String()
+func (self *Classpath) String() string {
+	return self.userClasspath.String()
 }

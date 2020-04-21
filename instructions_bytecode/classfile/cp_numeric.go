@@ -2,41 +2,76 @@ package classfile
 
 import "math"
 
-// Integer 类型
+/*
+CONSTANT_Integer_info {
+    u1 tag;
+    u4 bytes;
+}
+*/
 type ConstantIntegerInfo struct {
-	val float32
+	val int32
 }
 
-func (Self *ConstantIntegerInfo) readInfo(reader *ClassReader) {
+func (self *ConstantIntegerInfo) readInfo(reader *ClassReader) {
 	bytes := reader.readUint32()
-	Self.val = math.Float32frombits(bytes)
+	self.val = int32(bytes)
+}
+func (self *ConstantIntegerInfo) Value() int32 {
+	return self.val
 }
 
-// Long 类型
-type ConstantLongInfo struct {
-	val int64
+/*
+CONSTANT_Float_info {
+    u1 tag;
+    u4 bytes;
 }
-
-func (Self *ConstantLongInfo) readInfo(reader *ClassReader) {
-	bytes := reader.readUint64()
-	Self.val = int64(bytes)
-}
-
+*/
 type ConstantFloatInfo struct {
 	val float32
 }
 
-func (Self *ConstantFloatInfo) readInfo(reader *ClassReader) {
+func (self *ConstantFloatInfo) readInfo(reader *ClassReader) {
 	bytes := reader.readUint32()
-	Self.val = math.Float32frombits(bytes)
+	self.val = math.Float32frombits(bytes)
+}
+func (self *ConstantFloatInfo) Value() float32 {
+	return self.val
 }
 
-// Double 类型
+/*
+CONSTANT_Long_info {
+    u1 tag;
+    u4 high_bytes;
+    u4 low_bytes;
+}
+*/
+type ConstantLongInfo struct {
+	val int64
+}
+
+func (self *ConstantLongInfo) readInfo(reader *ClassReader) {
+	bytes := reader.readUint64()
+	self.val = int64(bytes)
+}
+func (self *ConstantLongInfo) Value() int64 {
+	return self.val
+}
+
+/*
+CONSTANT_Double_info {
+    u1 tag;
+    u4 high_bytes;
+    u4 low_bytes;
+}
+*/
 type ConstantDoubleInfo struct {
 	val float64
 }
 
-func (Self *ConstantDoubleInfo) readInfo(reader *ClassReader) {
+func (self *ConstantDoubleInfo) readInfo(reader *ClassReader) {
 	bytes := reader.readUint64()
-	Self.val = math.Float64frombits(bytes)
+	self.val = math.Float64frombits(bytes)
+}
+func (self *ConstantDoubleInfo) Value() float64 {
+	return self.val
 }

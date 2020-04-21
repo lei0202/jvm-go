@@ -3,16 +3,21 @@ package comparisons
 import "JVM-GO/instructions_bytecode/instructions/base"
 import "JVM-GO/instructions_bytecode/rtda"
 
-type DCMPG struct {
-	base.NoOperandsInstruction
+// Compare double
+type DCMPG struct{ base.NoOperandsInstruction }
+
+func (self *DCMPG) Execute(frame *rtda.Frame) {
+	_dcmp(frame, true)
 }
 
-type DCMPL struct {
-	base.NoOperandsInstruction
+type DCMPL struct{ base.NoOperandsInstruction }
+
+func (self *DCMPL) Execute(frame *rtda.Frame) {
+	_dcmp(frame, false)
 }
 
 func _dcmp(frame *rtda.Frame, gFlag bool) {
-	stack := frame.OperandStack
+	stack := frame.OperandStack()
 	v2 := stack.PopDouble()
 	v1 := stack.PopDouble()
 	if v1 > v2 {
@@ -26,12 +31,4 @@ func _dcmp(frame *rtda.Frame, gFlag bool) {
 	} else {
 		stack.PushInt(-1)
 	}
-}
-
-func (this *DCMPG) Execute(frame *rtda.Frame) {
-	_dcmp(frame, true)
-}
-
-func (this *DCMPL) Execute(frame *rtda.Frame) {
-	_dcmp(frame, false)
 }
