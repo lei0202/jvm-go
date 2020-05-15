@@ -1,5 +1,13 @@
 package heap
 
 type Object struct {
-	// todo
+	class  *Class
+	fields Slots
+}
+
+func newObject(class *Class) *Object {
+	return &Object{
+		class:  class,
+		fields: newSlots(class.instanceSlotCount),
+	}
 }

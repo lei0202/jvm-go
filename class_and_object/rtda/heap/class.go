@@ -1,6 +1,9 @@
 package heap
 
-import . "JVM-GO/class_and_object/classfile"
+import (
+	. "JVM-GO/class_and_object/classfile"
+	"strings"
+)
 
 type Class struct {
 	accessFlags       uint16
@@ -15,10 +18,10 @@ type Class struct {
 	interfaces        []*Class
 	instanceSlotCount uint
 	staticSlotCount   uint
-	staticVars        *Slots
+	staticVars        Slots
 }
 
-func newClass(cf *ClassFile) *Class {
+func NewClass(cf *ClassFile) *Class {
 	class := &Class{}
 	class.accessFlags = cf.AccessFlags()
 	class.name = cf.ClassName()
@@ -30,6 +33,56 @@ func newClass(cf *ClassFile) *Class {
 	return class
 }
 
-func (this *Class) IsPublic() bool {
-	return 0 != this.accessFlags&ACC_PUBLIC
+func (self *Class) IsPublic() bool {
+	return 0 != self.accessFlags&ACC_PUBLIC
+}
+func (self *Class) IsFinal() bool {
+	return 0 != self.accessFlags&ACC_FINAL
+}
+func (self *Class) IsSuper() bool {
+	return 0 != self.accessFlags&ACC_SUPER
+}
+func (self *Class) IsStatic() bool {
+	return 0 != self.accessFlags&ACC_STATIC
+}
+func (self *Class) IsInterface() bool {
+	return 0 != self.accessFlags&ACC_INTERFACE
+}
+func (self *Class) IsAbstract() bool {
+	return 0 != self.accessFlags&ACC_ABSTRACT
+}
+func (self *Class) IsSynthetic() bool {
+	return 0 != self.accessFlags&ACC_SYNTHETIC
+}
+func (self *Class) IsAnnotation() bool {
+	return 0 != self.accessFlags&ACC_ANNOTATION
+}
+func (self *Class) IsEnum() bool {
+	return 0 != self.accessFlags&ACC_ENUM
+}
+
+func (this *Class) isAccessibleTo(other *Class) bool {
+	return this.IsPublic() || this.getPackageName() == other.getPackageName()
+}
+
+func (this *Class) getPackageName() string {
+	if i := strings.LastIndex(this.name, "/"); i >= 0 {
+		return this.name[:i]
+	}
+	return ""
+}
+
+// getters
+func (self *Class) ConstantPool() *ConstantPool {
+	return self.constantPool
+}
+func (self *Class) StaticVars() Slots {
+	return self.staticVars
+}
+func (this *Class) Class() *Class {
+	return this.Class()
+}
+
+func (self *Class) NewObject() *Object {
+	return newObject(self)
 }

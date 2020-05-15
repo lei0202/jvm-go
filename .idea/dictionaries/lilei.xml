@@ -3,6 +3,7 @@
     <words>
       <w>bipush</w>
       <w>bytecode</w>
+      <w>classfile</w>
       <w>opcode</w>
       <w>sipush</w>
       <w>xjre</w>
